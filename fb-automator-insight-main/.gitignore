@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build output
+/dist/
+/build/
+/.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Environment files (keep templates tracked)
+.env
+.env.*
+!.env.example
+!env-template.txt
+
+# Editor & OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc caches
+/.parcel-cache/
+/.cache/
+
+# Coverage
+coverage/
+
+# Storybook
+storybook-static/
+
+# Local runtime
+.vercel/
+.netlify/
+
+# VS Code settings backup
+.history/

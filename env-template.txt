@@ -1,0 +1,20 @@
+# Environment Variables Template
+# Copy this file to .env and fill in your actual API keys
+
+# Facebook Graph API Configuration
+VITE_FB_GRAPH_VERSION=v23.0
+
+# Google Gemini API Configuration
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
+
+# Facebook Page Configuration (optional - can be set in the app)
+VITE_FB_PAGE_ID=your_facebook_page_id_here
+VITE_FB_ACCESS_TOKEN=your_facebook_access_token_here 
+
+# AI Performance Tuning (optional)
+# Maximum number of posts to analyze (sorted by engagement)
+VITE_AI_MAX_POSTS=15
+# Truncate post message content length fed into AI
+VITE_AI_TRUNCATE_CHARS=500
+# Number of posts to analyze per batch
+VITE_AI_BATCH_SIZE=5
