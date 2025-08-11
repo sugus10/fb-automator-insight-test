@@ -112,15 +112,15 @@ export default function AISuggestions() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">AI Suggestions</h1>
-          <p className="text-muted-foreground">AI-powered insights and recommendations for your Facebook strategy</p>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">AI Suggestions</h1>
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground">AI-powered insights and recommendations for your Facebook strategy</p>
         </div>
         <Button 
           onClick={handleAnalyze} 
           disabled={isAnalyzing || !posts || posts.length === 0}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 w-full sm:w-auto"
         >
           {isAnalyzing ? (
             <RefreshCw className="h-4 w-4 animate-spin" />
@@ -132,10 +132,10 @@ export default function AISuggestions() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex border-b">
+      <div className="flex border-b overflow-x-auto">
         <button
           onClick={() => setActiveTab("overview")}
-          className={`px-4 py-2 font-medium ${
+          className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base whitespace-nowrap ${
             activeTab === "overview" 
               ? "border-b-2 border-primary text-primary" 
               : "text-muted-foreground"
@@ -146,7 +146,7 @@ export default function AISuggestions() {
         </button>
         <button
           onClick={() => setActiveTab("posts")}
-          className={`px-4 py-2 font-medium ${
+          className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base whitespace-nowrap ${
             activeTab === "posts" 
               ? "border-b-2 border-primary text-primary" 
               : "text-muted-foreground"
@@ -157,7 +157,7 @@ export default function AISuggestions() {
         </button>
         <button
           onClick={() => setActiveTab("ideas")}
-          className={`px-4 py-2 font-medium ${
+          className={`px-3 sm:px-4 py-2 font-medium text-sm sm:text-base whitespace-nowrap ${
             activeTab === "ideas" 
               ? "border-b-2 border-primary text-primary" 
               : "text-muted-foreground"
@@ -174,21 +174,21 @@ export default function AISuggestions() {
           {/* Marketing Health Score */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <TrendingUp className="h-5 w-5" />
                 Marketing Health Score
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className={`p-4 rounded-lg ${getHealthBgColor(overallAnalysis.marketingHealthScore)}`}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Overall Performance</span>
-                  <span className={`text-2xl font-bold ${getHealthColor(overallAnalysis.marketingHealthScore)}`}>
+                <div className="flex items-center justify-between mb-2 gap-2">
+                  <span className="text-xs sm:text-sm font-medium">Overall Performance</span>
+                  <span className={`text-lg sm:text-xl md:text-2xl font-bold ${getHealthColor(overallAnalysis.marketingHealthScore)}`}>
                     {overallAnalysis.marketingHealthScore}/100
                   </span>
                 </div>
                 <Progress value={overallAnalysis.marketingHealthScore} className="h-2" />
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                   {overallAnalysis.summary}
                 </p>
               </div>
@@ -196,39 +196,39 @@ export default function AISuggestions() {
           </Card>
 
           {/* Best & Worst Posts */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                   <CheckCircle className="h-5 w-5 text-green-600" />
                   Best Performing Posts
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
+                <ul className="space-y-2 sm:space-y-3">
                   {overallAnalysis.bestPosts.map((entry, idx) => {
                     const { id, reason } = extractIdAndReason(entry);
                     const p = id ? posts?.find(x => x.id === id) : undefined;
                     return (
-                      <li key={idx} className="flex items-start gap-3">
+                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
                         <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
-                        <div className="text-sm">
+                        <div className="text-xs sm:text-sm min-w-0 flex-1">
                           {p ? (
                             <div className="mb-1">
-                              <div className="font-medium">{p.message ? p.message.slice(0, 100) : "(No message)"}</div>
-                              <div className="text-xs text-muted-foreground mt-1 flex gap-3">
+                              <div className="font-medium break-words">{p.message ? p.message.slice(0, 80) : "(No message)"}</div>
+                              <div className="text-xs text-muted-foreground mt-1 flex flex-wrap gap-2 sm:gap-3">
                                 <span>❤️ {p.likes}</span>
                                 <span>💬 {p.comments}</span>
                                 <span>📤 {p.shares}</span>
                                 {p.permalinkUrl && (
-                                  <a className="underline" href={p.permalinkUrl} target="_blank" rel="noreferrer">View</a>
+                                  <a className="underline break-all" href={p.permalinkUrl} target="_blank" rel="noreferrer">View</a>
                                 )}
                               </div>
                             </div>
                           ) : (
-                            <div className="font-mono text-xs text-muted-foreground">{id ?? "Post"}</div>
+                            <div className="font-mono text-xs text-muted-foreground break-all">{id ?? "Post"}</div>
                           )}
-                          <div className="text-muted-foreground">{reason}</div>
+                          <div className="text-muted-foreground break-words">{reason}</div>
                         </div>
                       </li>
                     );
@@ -239,36 +239,36 @@ export default function AISuggestions() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                   <AlertTriangle className="h-5 w-5 text-red-600" />
                   Posts Needing Improvement
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
+                <ul className="space-y-2 sm:space-y-3">
                   {overallAnalysis.worstPosts.map((entry, idx) => {
                     const { id, reason } = extractIdAndReason(entry);
                     const p = id ? posts?.find(x => x.id === id) : undefined;
                     return (
-                      <li key={idx} className="flex items-start gap-3">
+                      <li key={idx} className="flex items-start gap-2 sm:gap-3">
                         <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0" />
-                        <div className="text-sm">
+                        <div className="text-xs sm:text-sm min-w-0 flex-1">
                           {p ? (
                             <div className="mb-1">
-                              <div className="font-medium">{p.message ? p.message.slice(0, 100) : "(No message)"}</div>
-                              <div className="text-xs text-muted-foreground mt-1 flex gap-3">
+                              <div className="font-medium break-words">{p.message ? p.message.slice(0, 80) : "(No message)"}</div>
+                              <div className="text-xs text-muted-foreground mt-1 flex flex-wrap gap-2 sm:gap-3">
                                 <span>❤️ {p.likes}</span>
                                 <span>💬 {p.comments}</span>
                                 <span>📤 {p.shares}</span>
                                 {p.permalinkUrl && (
-                                  <a className="underline" href={p.permalinkUrl} target="_blank" rel="noreferrer">View</a>
+                                  <a className="underline break-all" href={p.permalinkUrl} target="_blank" rel="noreferrer">View</a>
                                 )}
                               </div>
                             </div>
                           ) : (
-                            <div className="font-mono text-xs text-muted-foreground">{id ?? "Post"}</div>
+                            <div className="font-mono text-xs text-muted-foreground break-all">{id ?? "Post"}</div>
                           )}
-                          <div className="text-muted-foreground">{reason}</div>
+                          <div className="text-muted-foreground break-words">{reason}</div>
                         </div>
                       </li>
                     );
@@ -281,17 +281,17 @@ export default function AISuggestions() {
           {/* Strategic Recommendations */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <Target className="h-5 w-5" />
                 Strategic Recommendations
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {overallAnalysis.recommendations.map((rec, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                  <div key={idx} className="flex items-start gap-2 sm:gap-3 p-3 bg-muted rounded-lg">
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                    <span className="text-sm">{rec}</span>
+                    <span className="text-xs sm:text-sm break-words">{rec}</span>
                   </div>
                 ))}
               </div>
@@ -302,15 +302,15 @@ export default function AISuggestions() {
 
       {/* Post Analysis Tab */}
       {activeTab === "posts" && postAnalyses.length > 0 && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {postAnalyses.map((analysis, idx) => {
             const post = posts?.find(p => p.id === analysis.postId);
             return (
               <Card key={analysis.postId}>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">Post Analysis #{idx + 1}</CardTitle>
-                    <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                    <CardTitle className="text-sm sm:text-base">Post Analysis #{idx + 1}</CardTitle>
+                    <div className="flex flex-wrap gap-2">
                       <Badge variant="outline">
                         Quality: {analysis.qualityScore}/10
                       </Badge>
@@ -320,15 +320,15 @@ export default function AISuggestions() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3 sm:space-y-4">
                   {/* Post Preview */}
                   {post && (
                     <div className="p-3 bg-muted rounded-lg">
-                      <p className="text-sm font-medium mb-1">Post Preview:</p>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <p className="text-xs sm:text-sm font-medium mb-1">Post Preview:</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 break-words">
                         {post.message || "No message"}
                       </p>
-                      <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap gap-2 sm:gap-4 mt-2 text-xs text-muted-foreground">
                         <span>❤️ {post.likes}</span>
                         <span>💬 {post.comments}</span>
                         <span>📤 {post.shares}</span>
@@ -338,15 +338,15 @@ export default function AISuggestions() {
 
                   {/* Problems Found */}
                   <div>
-                    <h4 className="font-medium text-red-600 mb-2 flex items-center gap-2">
+                    <h4 className="font-medium text-red-600 mb-2 flex items-center gap-2 text-sm sm:text-base">
                       <AlertTriangle className="h-4 w-4" />
                       Problems Found
                     </h4>
-                    <ul className="space-y-1">
+                    <ul className="space-y-1 sm:space-y-2">
                       {analysis.problems.map((problem, pIdx) => (
-                        <li key={pIdx} className="text-sm flex items-start gap-2">
+                        <li key={pIdx} className="text-xs sm:text-sm flex items-start gap-2">
                           <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0" />
-                          {problem}
+                          <span className="break-words">{problem}</span>
                         </li>
                       ))}
                     </ul>
@@ -354,15 +354,15 @@ export default function AISuggestions() {
 
                   {/* Improvements */}
                   <div>
-                    <h4 className="font-medium text-blue-600 mb-2 flex items-center gap-2">
+                    <h4 className="font-medium text-blue-600 mb-2 flex items-center gap-2 text-sm sm:text-base">
                       <CheckCircle className="h-4 w-4" />
                       Suggested Improvements
                     </h4>
-                    <ul className="space-y-1">
+                    <ul className="space-y-1 sm:space-y-2">
                       {analysis.improvements.map((improvement, iIdx) => (
-                        <li key={iIdx} className="text-sm flex items-start gap-2">
+                        <li key={iIdx} className="text-xs sm:text-sm flex items-start gap-2">
                           <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                          {improvement}
+                          <span className="break-words">{improvement}</span>
                         </li>
                       ))}
                     </ul>
@@ -376,24 +376,24 @@ export default function AISuggestions() {
 
       {/* Content Ideas Tab */}
       {activeTab === "ideas" && overallAnalysis && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Next Post Ideas */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <Lightbulb className="h-5 w-5" />
                 Next Post Ideas
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {overallAnalysis.nextPostIdeas.map((idea, idx) => (
-                  <div key={idx} className="p-4 border rounded-lg hover:bg-muted transition-colors">
-                    <div className="flex items-start gap-3">
+                  <div key={idx} className="p-3 sm:p-4 border rounded-lg hover:bg-muted transition-colors">
+                    <div className="flex items-start gap-2 sm:gap-3">
                       <Zap className="h-5 w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="font-medium text-sm">Idea #{idx + 1}</p>
-                        <p className="text-sm text-muted-foreground mt-1">{idea}</p>
+                        <p className="font-medium text-xs sm:text-sm">Idea #{idx + 1}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground mt-1 break-words">{idea}</p>
                       </div>
                     </div>
                   </div>
@@ -406,21 +406,21 @@ export default function AISuggestions() {
           {postAnalyses.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                   <MessageSquare className="h-5 w-5" />
                   Content Ideas from Post Analysis
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {postAnalyses.slice(0, 3).map((analysis, idx) => (
                     <div key={idx} className="p-3 border rounded-lg">
-                      <p className="text-sm font-medium mb-2">Based on Post #{idx + 1}</p>
-                      <div className="space-y-2">
+                      <p className="text-xs sm:text-sm font-medium mb-2">Based on Post #{idx + 1}</p>
+                      <div className="space-y-1 sm:space-y-2">
                         {analysis.contentIdeas.map((idea, ideaIdx) => (
                           <div key={ideaIdx} className="flex items-start gap-2">
                             <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                            <span className="text-sm">{idea}</span>
+                            <span className="text-xs sm:text-sm break-words">{idea}</span>
                           </div>
                         ))}
                       </div>
@@ -436,14 +436,14 @@ export default function AISuggestions() {
       {/* Loading State */}
       {isAnalyzing && (
         <Card>
-          <CardContent className="p-8 text-center">
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
-            <p className="text-lg font-medium">Analyzing your posts...</p>
-            <p className="text-sm text-muted-foreground">This may take a few moments</p>
+          <CardContent className="p-6 sm:p-8 text-center">
+            <RefreshCw className="h-6 w-6 sm:h-8 sm:w-8 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-base sm:text-lg font-medium">Analyzing your posts...</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">This may take a few moments</p>
             {progress.total > 0 && (
               <p className="text-xs text-muted-foreground mt-2">{progress.current}/{progress.total} processed</p>
             )}
-            <p className="text-xs text-muted-foreground mt-2">If you see rate limit errors, please wait 30 seconds and try again</p>
+            <p className="text-xs text-muted-foreground mt-2 break-words">If you see rate limit errors, please wait 30 seconds and try again</p>
           </CardContent>
         </Card>
       )}
@@ -451,10 +451,10 @@ export default function AISuggestions() {
       {/* Error State */}
       {!isAnalyzing && overallAnalysis && overallAnalysis.summary.includes("Rate limit") && (
         <Card>
-          <CardContent className="p-8 text-center">
-            <AlertTriangle className="h-8 w-8 mx-auto mb-4 text-yellow-500" />
-            <p className="text-lg font-medium">Rate Limit Reached</p>
-            <p className="text-sm text-muted-foreground mb-4">
+          <CardContent className="p-6 sm:p-8 text-center">
+            <AlertTriangle className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-4 text-yellow-500" />
+            <p className="text-base sm:text-lg font-medium">Rate Limit Reached</p>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-4">
               Gemini API has rate limits. Please wait 30 seconds and try again.
             </p>
             <Button onClick={handleAnalyze} className="flex items-center gap-2">
@@ -468,10 +468,10 @@ export default function AISuggestions() {
       {/* No Posts State */}
       {!posts || posts.length === 0 ? (
         <Card>
-          <CardContent className="p-8 text-center">
-            <Brain className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
-            <p className="text-lg font-medium">No posts to analyze</p>
-            <p className="text-sm text-muted-foreground">
+          <CardContent className="p-6 sm:p-8 text-center">
+            <Brain className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-4 text-muted-foreground" />
+            <p className="text-base sm:text-lg font-medium">No posts to analyze</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Connect your Facebook page and load some posts to get AI insights
             </p>
           </CardContent>

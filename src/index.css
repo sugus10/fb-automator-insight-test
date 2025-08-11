@@ -116,5 +116,32 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+  
+  /* Ensure proper text wrapping on mobile */
+  .break-words {
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  
+  /* Improve touch targets on mobile */
+  @media (max-width: 640px) {
+    button, a, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  /* Improve table responsiveness */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }

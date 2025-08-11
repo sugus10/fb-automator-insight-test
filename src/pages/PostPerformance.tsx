@@ -64,12 +64,12 @@ export default function PostPerformance() {
     <div className="space-y-6">
       {/* Debug Info - Development Only */}
       {process.env.NODE_ENV === 'development' && (
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-blue-50 border-blue-200 overflow-hidden">
           <CardHeader>
             <CardTitle className="text-blue-800">🔧 PostPerformance Debug</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-sm text-blue-700 space-y-1">
+            <div className="text-xs sm:text-sm text-blue-700 space-y-1">
               <div>Credentials: {credentials ? 'Set' : 'None'}</div>
               <div>Posts loaded: {posts?.length ?? 0}</div>
               <div>Loading: {isLoadingPosts ? 'Yes' : 'No'}</div>
@@ -79,11 +79,11 @@ export default function PostPerformance() {
               {posts && posts.length > 0 && (
                 <div>
                   <div>First post ID: {posts[0].id}</div>
-                  <div>First post message: {posts[0].message.substring(0, 50)}...</div>
+                  <div className="break-all">First post message: {posts[0].message.substring(0, 50)}...</div>
                   <div>First post likes: {posts[0].likes}</div>
                 </div>
               )}
-              <div className="mt-4 flex gap-2">
+              <div className="mt-4 flex flex-col sm:flex-row gap-2">
                 <Button onClick={handleTestAPI} size="sm" variant="outline">
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Test API Call
@@ -98,10 +98,10 @@ export default function PostPerformance() {
         </Card>
       )}
 
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center justify-between">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-foreground">Post Performance</h1>
-          <p className="text-sm md:text-base text-muted-foreground">Track and analyze your Facebook posts</p>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">Post Performance</h1>
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Track and analyze your Facebook posts</p>
         </div>
         
         <div className="flex gap-2 w-full sm:w-auto">
@@ -129,13 +129,13 @@ export default function PostPerformance() {
       </div>
 
       {/* Search */}
-      <div className="relative max-w-md">
+      <div className="relative w-full max-w-md">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
           placeholder="Search posts..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
+          className="pl-10 text-sm"
         />
       </div>
 
@@ -155,12 +155,12 @@ export default function PostPerformance() {
 
       {/* Content based on view mode */}
       {viewMode === "feed" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
           {(isLoadingPosts ? Array.from({ length: 4 }) : filteredPosts).map((post, idx) => (
             <Card key={(post as any)?.id ?? idx} className="transition-smooth hover:shadow-facebook-md">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-3 sm:p-4 md:p-6">
                 {!isLoadingPosts && (post as any)?.fullPictureUrl ? (
-                  <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4 max-h-48 md:max-h-none">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-3 sm:mb-4 max-h-32 sm:max-h-48 md:max-h-none">
                     <img 
                       src={(post as any).fullPictureUrl} 
                       alt="Post" 
@@ -172,39 +172,44 @@ export default function PostPerformance() {
                       }}
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-gradient-primary text-primary-foreground hidden">
-                      <span className="text-sm font-medium">Post Image</span>
+                      <span className="text-xs sm:text-sm font-medium">Post Image</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="aspect-video bg-gradient-primary rounded-lg flex items-center justify-center text-primary-foreground mb-4 max-h-48 md:max-h-none">
-                    <span className="text-sm font-medium">No Image</span>
+                  <div className="aspect-video bg-gradient-primary rounded-lg flex items-center justify-center text-primary-foreground mb-3 sm:mb-4 max-h-32 sm:max-h-48 md:max-h-none">
+                    <span className="text-xs sm:text-sm font-medium">No Image</span>
                   </div>
                 )}
                 
-                <div className="space-y-4">
-                  <p className="text-xs md:text-sm text-foreground line-clamp-3">{(post as any)?.message ?? ""}</p>
+                <div className="space-y-3 sm:space-y-4">
+                  <p className="text-xs sm:text-sm text-foreground line-clamp-2 sm:line-clamp-3 break-words">{(post as any)?.message ?? ""}</p>
                   {!isLoadingPosts && (
-                    <p className="text-xs text-muted-foreground">
-                      Posted {new Date((post as any).createdTime).toLocaleDateString()} at {new Date((post as any).createdTime).toLocaleTimeString()}
+                    <p className="text-xs text-muted-foreground break-words">
+                      <span className="sm:hidden">
+                        {new Date((post as any).createdTime).toLocaleDateString()}
+                      </span>
+                      <span className="hidden sm:inline">
+                        Posted {new Date((post as any).createdTime).toLocaleDateString()} at {new Date((post as any).createdTime).toLocaleTimeString()}
+                      </span>
                     </p>
                   )}
                   
-                  <div className="grid grid-cols-2 gap-2 md:gap-4">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
                     <div className="flex items-center gap-2">
                       <Heart className="h-4 w-4 text-destructive" />
-                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.likes ?? 0).toLocaleString()}</span>
+                      <span className="text-xs sm:text-sm font-medium">{Number((post as any)?.likes ?? 0).toLocaleString()}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <MessageCircle className="h-4 w-4 text-primary" />
-                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.comments ?? 0)}</span>
+                      <span className="text-xs sm:text-sm font-medium">{Number((post as any)?.comments ?? 0)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Share2 className="h-4 w-4 text-success" />
-                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.shares ?? 0)}</span>
+                      <span className="text-xs sm:text-sm font-medium">{Number((post as any)?.shares ?? 0)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Eye className="h-4 w-4 text-warning" />
-                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.reach ?? 0).toLocaleString()}</span>
+                      <span className="text-xs sm:text-sm font-medium">{Number((post as any)?.reach ?? 0).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -215,45 +220,45 @@ export default function PostPerformance() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Posts Table</CardTitle>
+            <CardTitle className="text-base sm:text-lg">Posts Table</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Table>
+          <CardContent className="overflow-x-auto">
+            <Table className="min-w-full">
               <TableHeader>
                 <TableRow className="text-xs md:text-sm">
                   <TableHead className="hidden md:table-cell">Post ID</TableHead>
-                  <TableHead className="w-20 md:w-auto">Date</TableHead>
+                  <TableHead className="w-16 sm:w-20 md:w-auto">Date</TableHead>
                   <TableHead>Content</TableHead>
-                  <TableHead className="w-16 md:w-auto">Likes</TableHead>
-                  <TableHead className="w-16 md:w-auto hidden sm:table-cell">Comments</TableHead>
-                  <TableHead className="w-16 md:w-auto hidden sm:table-cell">Shares</TableHead>
-                  <TableHead className="w-16 md:w-auto hidden lg:table-cell">Reach</TableHead>
+                  <TableHead className="w-12 sm:w-16 md:w-auto">Likes</TableHead>
+                  <TableHead className="w-12 sm:w-16 md:w-auto hidden sm:table-cell">Comments</TableHead>
+                  <TableHead className="w-12 sm:w-16 md:w-auto hidden sm:table-cell">Shares</TableHead>
+                  <TableHead className="w-12 sm:w-16 md:w-auto hidden lg:table-cell">Reach</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {(isLoadingPosts ? [] : filteredPosts).map((post) => (
                   <TableRow key={post.id} className="text-xs md:text-sm">
                     <TableCell className="hidden md:table-cell">
-                      <Badge variant="outline">{post.id}</Badge>
+                      <Badge variant="outline" className="text-xs">{post.id}</Badge>
                     </TableCell>
                     <TableCell className="text-xs">
                       <div className="md:hidden">{new Date(post.createdTime).toLocaleDateString()}</div>
                       <div className="hidden md:block">{new Date(post.createdTime).toLocaleString()}</div>
                     </TableCell>
-                    <TableCell className="max-w-[150px] md:max-w-xs truncate">
+                    <TableCell className="max-w-[100px] sm:max-w-[150px] md:max-w-xs truncate">
                       {post.message}
                     </TableCell>
                     <TableCell>
-                      <span className="font-medium text-xs md:text-sm">{post.likes.toLocaleString()}</span>
+                      <span className="font-medium text-xs sm:text-sm">{post.likes.toLocaleString()}</span>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      <span className="font-medium text-xs md:text-sm">{post.comments}</span>
+                      <span className="font-medium text-xs sm:text-sm">{post.comments}</span>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      <span className="font-medium text-xs md:text-sm">{post.shares}</span>
+                      <span className="font-medium text-xs sm:text-sm">{post.shares}</span>
                     </TableCell>
                     <TableCell className="hidden lg:table-cell">
-                      <span className="font-medium text-xs md:text-sm">{Number(post.reach ?? 0).toLocaleString()}</span>
+                      <span className="font-medium text-xs sm:text-sm">{Number(post.reach ?? 0).toLocaleString()}</span>
                     </TableCell>
                   </TableRow>
                 ))}
