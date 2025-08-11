@@ -36,13 +36,13 @@ export function AppSidebar() {
     path === "/" ? currentPath === "/" : currentPath.startsWith(path);
 
   return (
-    <Sidebar className={collapsed ? "w-16" : "w-64"} collapsible="icon">
+    <Sidebar className={collapsed ? "w-12 sm:w-16" : "w-56 sm:w-64"} collapsible="icon">
       <SidebarContent>
         {/* Logo Section */}
-        <div className="flex items-center justify-center p-4 border-b border-sidebar-border">
-          <Facebook className="h-8 w-8 text-primary" />
+        <div className="flex items-center justify-center p-3 sm:p-4 border-b border-sidebar-border">
+          <Facebook className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
           {!collapsed && (
-            <span className="ml-2 text-lg font-semibold text-foreground">
+            <span className="ml-2 text-base sm:text-lg font-semibold text-foreground">
               Dashboard
             </span>
           )}
@@ -66,9 +66,9 @@ export function AppSidebar() {
                             : "text-foreground hover:bg-accent hover:text-accent-foreground"
                         }`}
                       >
-                        <item.icon className="h-5 w-5 flex-shrink-0" />
+                        <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                         {!collapsed && (
-                          <span className="ml-3">{item.title}</span>
+                          <span className="ml-2 sm:ml-3 text-sm sm:text-base">{item.title}</span>
                         )}
                       </NavLink>
                     </SidebarMenuButton>

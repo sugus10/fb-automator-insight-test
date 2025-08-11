@@ -100,26 +100,30 @@ export default function PostPerformance() {
 
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Post Performance</h1>
-          <p className="text-muted-foreground">Track and analyze your Facebook posts</p>
+          <h1 className="text-xl md:text-2xl font-bold text-foreground">Post Performance</h1>
+          <p className="text-sm md:text-base text-muted-foreground">Track and analyze your Facebook posts</p>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <Button
             variant={viewMode === "feed" ? "default" : "outline"}
             size="sm"
             onClick={() => setViewMode("feed")}
+            className="flex-1 sm:flex-none"
           >
             <Grid className="h-4 w-4 mr-2" />
-            Feed View
+            <span className="hidden sm:inline">Feed View</span>
+            <span className="sm:hidden">Feed</span>
           </Button>
           <Button
             variant={viewMode === "table" ? "default" : "outline"}
             size="sm"
             onClick={() => setViewMode("table")}
+            className="flex-1 sm:flex-none"
           >
             <List className="h-4 w-4 mr-2" />
-            Table View
+            <span className="hidden sm:inline">Table View</span>
+            <span className="sm:hidden">Table</span>
           </Button>
         </div>
       </div>
@@ -151,12 +155,12 @@ export default function PostPerformance() {
 
       {/* Content based on view mode */}
       {viewMode === "feed" ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
           {(isLoadingPosts ? Array.from({ length: 4 }) : filteredPosts).map((post, idx) => (
             <Card key={(post as any)?.id ?? idx} className="transition-smooth hover:shadow-facebook-md">
-              <CardContent className="p-6">
+              <CardContent className="p-4 md:p-6">
                 {!isLoadingPosts && (post as any)?.fullPictureUrl ? (
-                  <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4 max-h-48 md:max-h-none">
                     <img 
                       src={(post as any).fullPictureUrl} 
                       alt="Post" 
@@ -172,35 +176,35 @@ export default function PostPerformance() {
                     </div>
                   </div>
                 ) : (
-                  <div className="aspect-video bg-gradient-primary rounded-lg flex items-center justify-center text-primary-foreground mb-4">
+                  <div className="aspect-video bg-gradient-primary rounded-lg flex items-center justify-center text-primary-foreground mb-4 max-h-48 md:max-h-none">
                     <span className="text-sm font-medium">No Image</span>
                   </div>
                 )}
                 
                 <div className="space-y-4">
-                  <p className="text-sm text-foreground">{(post as any)?.message ?? ""}</p>
+                  <p className="text-xs md:text-sm text-foreground line-clamp-3">{(post as any)?.message ?? ""}</p>
                   {!isLoadingPosts && (
                     <p className="text-xs text-muted-foreground">
                       Posted {new Date((post as any).createdTime).toLocaleDateString()} at {new Date((post as any).createdTime).toLocaleTimeString()}
                     </p>
                   )}
                   
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-2 md:gap-4">
                     <div className="flex items-center gap-2">
                       <Heart className="h-4 w-4 text-destructive" />
-                      <span className="text-sm font-medium">{Number((post as any)?.likes ?? 0).toLocaleString()}</span>
+                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.likes ?? 0).toLocaleString()}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <MessageCircle className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-medium">{Number((post as any)?.comments ?? 0)}</span>
+                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.comments ?? 0)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Share2 className="h-4 w-4 text-success" />
-                      <span className="text-sm font-medium">{Number((post as any)?.shares ?? 0)}</span>
+                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.shares ?? 0)}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Eye className="h-4 w-4 text-warning" />
-                      <span className="text-sm font-medium">{Number((post as any)?.reach ?? 0).toLocaleString()}</span>
+                      <span className="text-xs md:text-sm font-medium">{Number((post as any)?.reach ?? 0).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -216,37 +220,40 @@ export default function PostPerformance() {
           <CardContent>
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Post ID</TableHead>
-                  <TableHead>Date</TableHead>
+                <TableRow className="text-xs md:text-sm">
+                  <TableHead className="hidden md:table-cell">Post ID</TableHead>
+                  <TableHead className="w-20 md:w-auto">Date</TableHead>
                   <TableHead>Content</TableHead>
-                  <TableHead>Likes</TableHead>
-                  <TableHead>Comments</TableHead>
-                  <TableHead>Shares</TableHead>
-                  <TableHead>Reach</TableHead>
+                  <TableHead className="w-16 md:w-auto">Likes</TableHead>
+                  <TableHead className="w-16 md:w-auto hidden sm:table-cell">Comments</TableHead>
+                  <TableHead className="w-16 md:w-auto hidden sm:table-cell">Shares</TableHead>
+                  <TableHead className="w-16 md:w-auto hidden lg:table-cell">Reach</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {(isLoadingPosts ? [] : filteredPosts).map((post) => (
-                  <TableRow key={post.id}>
-                    <TableCell>
+                  <TableRow key={post.id} className="text-xs md:text-sm">
+                    <TableCell className="hidden md:table-cell">
                       <Badge variant="outline">{post.id}</Badge>
                     </TableCell>
-                    <TableCell>{new Date(post.createdTime).toLocaleString()}</TableCell>
-                    <TableCell className="max-w-xs truncate">
+                    <TableCell className="text-xs">
+                      <div className="md:hidden">{new Date(post.createdTime).toLocaleDateString()}</div>
+                      <div className="hidden md:block">{new Date(post.createdTime).toLocaleString()}</div>
+                    </TableCell>
+                    <TableCell className="max-w-[150px] md:max-w-xs truncate">
                       {post.message}
                     </TableCell>
                     <TableCell>
-                      <span className="font-medium">{post.likes.toLocaleString()}</span>
+                      <span className="font-medium text-xs md:text-sm">{post.likes.toLocaleString()}</span>
                     </TableCell>
-                    <TableCell>
-                      <span className="font-medium">{post.comments}</span>
+                    <TableCell className="hidden sm:table-cell">
+                      <span className="font-medium text-xs md:text-sm">{post.comments}</span>
                     </TableCell>
-                    <TableCell>
-                      <span className="font-medium">{post.shares}</span>
+                    <TableCell className="hidden sm:table-cell">
+                      <span className="font-medium text-xs md:text-sm">{post.shares}</span>
                     </TableCell>
-                    <TableCell>
-                      <span className="font-medium">{Number(post.reach ?? 0).toLocaleString()}</span>
+                    <TableCell className="hidden lg:table-cell">
+                      <span className="font-medium text-xs md:text-sm">{Number(post.reach ?? 0).toLocaleString()}</span>
                     </TableCell>
                   </TableRow>
                 ))}
